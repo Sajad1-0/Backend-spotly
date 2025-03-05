@@ -3,7 +3,7 @@ import {drizzle} from 'drizzle-orm/node-postgres';
 import { roomsSchema } from '../db/schema';
 import { eq, and, ne } from 'drizzle-orm';
 
-const db = drizzle(process.env.DATABASE_URL!);
+export const db = drizzle(process.env.DATABASE_URL!);
 
 export type CreateRoom = typeof roomsSchema.$inferInsert;
 export type UpdateRoom = Partial<CreateRoom>;
@@ -70,6 +70,4 @@ export class roomRepository {
 
         return deleteRooms[0].id;
     }
-
-
 }

@@ -1,8 +1,6 @@
 import 'dotenv/config';
-import { drizzle } from 'drizzle-orm/node-postgres';
 import { userSchema } from '../db/schema';
-
-const db = drizzle(process.env.DATABASE_URL!);
+import { db } from '../rooms/rooms-Repository';
 
 // typen ska innehålla samma egenskaper som databasen. 
 export type CreateUser = typeof userSchema.$inferInsert;

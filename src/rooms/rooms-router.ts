@@ -6,3 +6,5 @@ const router = Router()
 router.post('/', CreateRooms);
 router.put('/', deletingRooms);
 router.get('/', findAllRooms);
+
+export default router
