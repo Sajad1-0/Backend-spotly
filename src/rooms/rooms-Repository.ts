@@ -55,16 +55,20 @@ export class roomRepository {
     }
 
     // delete rooms
-    async delete(id: string): Promise<String> {
+    async delete(id: string): Promise<string> {
+
+        if(!id) {
+            throw new Error('Room ID is required!')
+        }
         const deleteRooms = await db.delete(roomsSchema)
         .where(eq(roomsSchema.id, id))
-        .returning({deletedId: roomsSchema.id})
+        .returning()
 
         if(deleteRooms.length === 0) {
             throw new Error(`There is no room with this id ${id}`)
         }
 
-        return deleteRooms[0].deletedId;
+        return deleteRooms[0].id;
     }
 
 

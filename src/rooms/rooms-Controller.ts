@@ -2,13 +2,13 @@ import { Request, Response } from "express";
 import { roomRepository, CreateRoom, UpdateRoom } from "./rooms-Repository";
 import { httpCodeStatus } from "../httpStatus";
 
-const rommsController = new roomRepository();
+const roomsController = new roomRepository();
 
 export const CreateRooms = async (req: Request, res: Response) => {
     const createRoom = req.body as CreateRoom;
 
     try {
-        const roomId = await rommsController.create(createRoom);
+        const roomId = await roomsController.create(createRoom);
         res.status(httpCodeStatus.CREATED)
         .json({message: 'Rooms Created', roomId})
     }
@@ -18,7 +18,7 @@ export const CreateRooms = async (req: Request, res: Response) => {
     }
 }
 
-export const deletingRooms = async (req: Request, res: Response) {
+export const deletingRooms = async (req: Request, res: Response) => {
     const deleteRoom = req.body as UpdateRoom;
     if(!deleteRoom.id) {
         res.status(httpCodeStatus.BAD_REQUEST).json({
@@ -27,7 +27,7 @@ export const deletingRooms = async (req: Request, res: Response) {
         return
     }
     try {
-        const roomId = await rommsController.delete(deleteRoom.id)
+        const roomId = await roomsController.delete(deleteRoom.id)
         res.status(httpCodeStatus.OK).json({
             message: 'Room has been deleted succesfully!', deleteRoom
         })
@@ -37,4 +37,9 @@ export const deletingRooms = async (req: Request, res: Response) {
             error: (error as Error).message
         })
     }
+}
+
+export const findAllRooms = async (req: Request, res: Response) => {
+    const allRooms = await roomsController.findAllRooms();
+    res.status(httpCodeStatus.OK).json(allRooms)
 }
