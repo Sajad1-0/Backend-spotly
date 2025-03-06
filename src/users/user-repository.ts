@@ -48,4 +48,19 @@ export class userRepository {
 
         return updateRooms[0].updateId;
     }
+
+    async delete(id: string): Promise<string> {
+        if (!id) {
+            throw new Error('User ID required')
+        }
+
+        const deleteUser = await db.delete(userSchema)
+        .where(eq(userSchema.id, id))
+        .returning()
+
+        if (deleteUser.length === 0 ) {
+            throw new Error(`There is no User with this id ${id}`)
+        }
+        return deleteUser[0].id;
+    }
 }
