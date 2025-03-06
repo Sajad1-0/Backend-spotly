@@ -1,4 +1,4 @@
-import {CreatingUsers, findAllUsers, deletingUsers} from "./user-controller";
+import {CreatingUsers, findAllUsers, deletingUsers} from "../users/user-controller";
 import {Router} from "express";
 
 const router = Router();
