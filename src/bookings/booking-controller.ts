@@ -16,7 +16,7 @@ export const CreateBooking = async (req: Request, res: Response) => {
     }
     catch(err) {
         res.status(httpCodeStatus.NOT_FOUND).json({
-            error: (err as Error).message;
+            error: (err as Error).message
         })
     }
 }
