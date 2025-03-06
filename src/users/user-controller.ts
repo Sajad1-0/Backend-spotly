@@ -24,7 +24,9 @@ export const findAllUsers = async (req: Request, res: Response) => {
         res.status(httpCodeStatus.OK).json(userID)
     }
     catch(error) {
-        res.status(httpCodeStatus.NOT_FOUND),json('No user has been found')
+        res.status(httpCodeStatus.NOT_FOUND).json({
+            error: (error as Error).message
+        })
     }
 }
 
@@ -41,7 +43,7 @@ export const deletingUsers = async (req: Request, res: Response) => {
    try {
     const userID = await userController.delete(deleteUser.id)
     res.status(httpCodeStatus.OK).json({
-        message: 'User has been deleted', deleteUser
+        message: 'User has been deleted', userID
     })
    }
    catch(e) {

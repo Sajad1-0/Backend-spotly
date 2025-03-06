@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import {drizzle} from 'drizzle-orm/node-postgres';
 import { roomsSchema } from '../db/schema';
-import { eq, and, ne } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 
 export const db = drizzle(process.env.DATABASE_URL!);
 
