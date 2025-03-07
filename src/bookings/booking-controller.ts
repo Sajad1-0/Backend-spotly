@@ -5,11 +5,11 @@ import { httpCodeStatus } from "../httpStatus";
 const bookingController = new bookingRepository();
 
 
-export const CreateBooking = async (req: Request, res: Response) => {
+export const createBooking = async (req: Request, res: Response) => {
     const createBooking = req.body as CreateBookings;
 
     try {
-        const bookingId = await bookingController.Create(createBooking)
+        const bookingId = await bookingController.create(createBooking)
         res.status(httpCodeStatus.CREATED).json({
             message: 'You succesfully create a booking', bookingId
         })
@@ -21,10 +21,10 @@ export const CreateBooking = async (req: Request, res: Response) => {
     }
 }
 
-export const FindAllBookings = async (req: Request, res: Response) => {
+export const findAllBookings = async (req: Request, res: Response) => {
     try {
-        const bookingID = await bookingController.findAllBookings()
-        res.status(httpCodeStatus.OK).json(bookingID)
+        const bookingId = await bookingController.findAllBookings()
+        res.status(httpCodeStatus.OK).json(bookingId)
     }
     catch(err) {
         res.status(httpCodeStatus.NOT_FOUND).json({
@@ -33,7 +33,7 @@ export const FindAllBookings = async (req: Request, res: Response) => {
     }
 }
 
-export const DeleteBooking = async (req: Request, res: Response) => {
+export const deleteBooking = async (req: Request, res: Response) => {
     const deletedBooking = req.body as CreateBookings;
 
     if(!deletedBooking.id) {
@@ -44,9 +44,9 @@ export const DeleteBooking = async (req: Request, res: Response) => {
     }
 
     try {
-        const bookingID = await bookingController.delete(deletedBooking.id)
+        const bookingId = await bookingController.delete(deletedBooking.id)
         res.status(httpCodeStatus.OK).json({
-            message: 'Booking has been deleted', bookingID
+            message: 'Booking has been deleted', bookingId
         })
     }
     catch(err) {

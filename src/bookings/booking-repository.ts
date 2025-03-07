@@ -8,20 +8,20 @@ export type updateBookings = Partial<CreateBookings>;
 
 export class bookingRepository {
 
-    async Create(createBooking: CreateBookings): Promise<string> {
+    async create(createBooking: CreateBookings): Promise<string> {
         const createBookings = await db.insert(bookingSchema)
         .values(createBooking)
-        .returning({insertID: bookingSchema.id})
-        return createBookings[0].insertID
+        .returning({insertId: bookingSchema.id})
+        return createBookings[0].insertId
     }
 
     async update(id: string, updateBookings: updateBookings): Promise<string> {
         const updateBooking = await db.update(bookingSchema)
         .set(updateBookings)
         .where(eq(bookingSchema.id, id))
-        .returning({updateID: bookingSchema.id})
+        .returning({updateId: bookingSchema.id})
 
-        return updateBooking[0].updateID
+        return updateBooking[0].updateId
     }
 
     async findAllBookings(): Promise<CreateBookings[]> {

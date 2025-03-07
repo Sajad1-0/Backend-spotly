@@ -4,7 +4,7 @@ import { httpCodeStatus } from "../httpStatus";
 
 const roomsController = new roomRepository();
 
-export const CreateRooms = async (req: Request, res: Response) => {
+export const createRooms = async (req: Request, res: Response) => {
     const createRoom = req.body as CreateRoom;
 
     try {
@@ -29,7 +29,7 @@ export const deletingRooms = async (req: Request, res: Response) => {
     try {
         const roomId = await roomsController.delete(deleteRoom.id)
         res.status(httpCodeStatus.OK).json({
-            message: 'Room has been deleted succesfully!', deleteRoom
+            message: 'Room has been deleted succesfully!', roomId
         })
     }
     catch(error) {

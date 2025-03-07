@@ -1,9 +1,9 @@
-import {CreatingUsers, findAllUsers, deletingUsers} from "../users/user-controller";
+import {creatingUsers, findAllUsers, deletingUsers} from "../users/user-controller";
 import {Router} from "express";
 
 const router = Router();
 
-router.post('/', CreatingUsers);
+router.post('/', creatingUsers);
 router.get('/', findAllUsers);
 router.delete('/', deletingUsers)
 

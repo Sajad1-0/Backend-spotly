@@ -13,8 +13,8 @@ export class userRepository {
     async create(createUser: CreateUser): Promise<string> {
         const CreatedUser = await db.insert(userSchema)
         .values(createUser)
-        .returning({insertedID: userSchema.id})
-        return CreatedUser[0].insertedID;
+        .returning({insertedId: userSchema.id})
+        return CreatedUser[0].insertedId;
     }
 
     async findAllUsers(): Promise<CreateUser[]> {

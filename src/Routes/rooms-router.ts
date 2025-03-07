@@ -1,9 +1,9 @@
-import { CreateRooms, deletingRooms, findAllRooms } from "../rooms/rooms-Controller";
+import { createRooms, deletingRooms, findAllRooms } from "../rooms/rooms-Controller";
 import { Router } from "express";
 
 const router = Router()
 
-router.post('/', CreateRooms);
+router.post('/', createRooms);
 router.delete('/', deletingRooms);
 router.get('/', findAllRooms);
 
