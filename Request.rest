@@ -1,0 +1,22 @@
+## get rooms
+
+GET http://localhost:0216/rooms
+
+###
+
+## get one room
+GET http://localhost:0216/rooms/ed24ec95-f0ad-4fd5-ae51-d38a6c40d37f
+
+###
+POST http://localhost:0216/rooms
+Content-Type: application/json
+
+{
+        "name": "Conference-Room-12",
+        "capacity": 43,
+        "type": "Conference"   
+}
+###
+
+##hämta alla users
+GET http://localhost:0216/users
