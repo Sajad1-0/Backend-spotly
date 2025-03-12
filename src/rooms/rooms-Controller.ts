@@ -43,3 +43,27 @@ export const findAllRooms = async (req: Request, res: Response) => {
     const allRooms = await roomsController.findAllRooms();
     res.status(httpCodeStatus.OK).json(allRooms)
 }
+
+// find one room
+export const findOneRoom = async (req: Request, res: Response) => {
+    const findRoom = req.body as UpdateRoom;
+
+    if(!findRoom.id) {
+        res.status(httpCodeStatus.BAD_REQUEST).json({
+            message: 'Room ID is required'
+        })
+        return
+    }
+
+    try {
+        const roomId = await roomsController.findOne(findRoom.id);
+        res.status(httpCodeStatus.OK).json({
+            message: 'Room has been found', roomId
+        })
+    }
+    catch (error) {
+        res.status(httpCodeStatus.NOT_FOUND).json({
+            error: (error as Error)
+        })
+    }
+}
