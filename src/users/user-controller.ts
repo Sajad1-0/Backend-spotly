@@ -29,6 +29,26 @@ export const findAllUsers = async (req: Request, res: Response) => {
     }
 }
 
+export const findOneUserById = async (req: Request, res: Response) => {
+    try {
+        const userId = await userController.findOneUser(req.params.id);
+
+        if (!userId) {
+            res.status(httpCodeStatus.BAD_REQUEST).json({
+                message: 'User ID is required'
+            })
+        }
+        res.status(httpCodeStatus.OK).json({
+            message: 'User has been found', userId
+        })
+    }
+    catch (error) {
+        res.status(httpCodeStatus.NOT_FOUND).json({
+            error: (error as Error).message 
+        })
+    }
+}
+
 export const deletingUsers = async (req: Request, res: Response) => {
    const deleteUser = req.body as CreateUser;
    
