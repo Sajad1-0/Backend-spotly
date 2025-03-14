@@ -33,7 +33,27 @@ export const findAllBookings = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteBooking = async (req: Request, res: Response) => {
+export const findBookingById = async (req: Request, res: Response) => {
+    try {
+        const bookingId = await bookingController.findOneBooking(req.params.id);
+        
+        if(!bookingId) {
+            res.status(httpCodeStatus.BAD_REQUEST).json({
+                message: 'The booking required ID'
+            })
+        }
+        res.status(httpCodeStatus.OK).json({
+            message: 'Booking has been found', bookingId
+        })
+    }
+    catch(err) {
+        res.status(httpCodeStatus.NOT_FOUND).json({
+            error: (err as Error).message
+        })
+    }
+}
+
+export const deleteBookingById = async (req: Request, res: Response) => {
     const deletedBooking = req.body as CreateBookings;
 
     if(!deletedBooking.id) {

@@ -49,7 +49,7 @@ export const findOneUserById = async (req: Request, res: Response) => {
     }
 }
 
-export const deletingUsers = async (req: Request, res: Response) => {
+export const deleteUserById = async (req: Request, res: Response) => {
    const deleteUser = req.body as CreateUser;
    
    if(!deleteUser.id) {

@@ -1,6 +1,6 @@
 import { 
     createRooms,
-    deletingRooms, 
+    deleteRoomById, 
     findAllRooms, 
     findOneRoom } from "../rooms/rooms-Controller";
 import { Router } from "express";
@@ -8,8 +8,8 @@ import { Router } from "express";
 const router = Router()
 
 router.post('/', createRooms);
-router.delete('/', deletingRooms);
+router.delete('/:id', deleteRoomById);
 router.get('/', findAllRooms);
-router.get('/:id', findOneRoom)
+router.get('/:id', findOneRoom);
 
 export default router

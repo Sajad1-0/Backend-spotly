@@ -18,7 +18,7 @@ export const createRooms = async (req: Request, res: Response) => {
     }
 }
 
-export const deletingRooms = async (req: Request, res: Response) => {
+export const deleteRoomById = async (req: Request, res: Response) => {
     const deleteRoom = req.body as UpdateRoom;
     if(!deleteRoom.id) {
         res.status(httpCodeStatus.BAD_REQUEST).json({
