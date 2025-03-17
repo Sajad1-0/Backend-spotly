@@ -1,4 +1,3 @@
-import { date } from "drizzle-orm/mysql-core";
 import {
     integer, 
     pgTable, 
@@ -30,7 +29,7 @@ export const bookingSchema = pgTable('bookings', {
     id: uuid().defaultRandom().primaryKey(),
     roomID: uuid().references(() => roomsSchema.id).notNull(),
     userID: uuid().references(() => userSchema.id).notNull(),
-    startTime: timestamp({ mode: 'date' }).notNull(),
-    endTime: timestamp({ mode: 'date' }).notNull()
+    startTime: timestamp({ mode: 'string' }).notNull(),
+    endTime: timestamp({ mode: 'string' }).notNull()
 })
 
