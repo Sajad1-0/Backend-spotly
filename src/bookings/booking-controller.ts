@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { bookingRepository, CreateBookings } from "./booking-repository";
+import { bookingRepository, CreateBookings, updateBookings } from "./booking-repository";
 import { httpCodeStatus } from "../httpStatus";
 
 const bookingController = new bookingRepository();
 
-
+// Create booking
 export const createBooking = async (req: Request, res: Response) => {
     const createBooking = req.body as CreateBookings;
 
@@ -21,6 +21,7 @@ export const createBooking = async (req: Request, res: Response) => {
     }
 }
 
+// get all bookings
 export const findAllBookings = async (req: Request, res: Response) => {
     try {
         const bookingId = await bookingController.findAllBookings()
@@ -33,6 +34,7 @@ export const findAllBookings = async (req: Request, res: Response) => {
     }
 }
 
+// find Booking 
 export const findBookingById = async (req: Request, res: Response) => {
     try {
         const bookingId = await bookingController.findOneBooking(req.params.id);
@@ -53,25 +55,52 @@ export const findBookingById = async (req: Request, res: Response) => {
     }
 }
 
+// delete booking 
 export const deleteBookingById = async (req: Request, res: Response) => {
-    const deletedBooking = req.body as CreateBookings;
-
-    if(!deletedBooking.id) {
-        res.status(httpCodeStatus.BAD_REQUEST).json({
-            message: 'Booking ID required'
-        })
-        return
-    }
-
     try {
-        const bookingId = await bookingController.delete(deletedBooking.id)
+        const bookingId = await bookingController.delete(req.params.id);
+
+        if(!bookingId) {
+            res.status(httpCodeStatus.BAD_REQUEST).json({
+                message: 'Booking ID required'
+            })
+            return
+        }
         res.status(httpCodeStatus.OK).json({
             message: 'Booking has been deleted', bookingId
         })
-    }
-    catch(err) {
+    } catch (error) {
         res.status(httpCodeStatus.NOT_FOUND).json({
-            error: (err as Error).message
+            message: 'Booking has not been found'
         })
     }
 }
+
+// update booking
+export const updateBookingById = async (
+    req: Request, res: Response) => {
+        
+        const updateBooking = req.body as updateBookings
+
+        try {
+            const updateId = await bookingController.update(
+                req.params.id,
+                updateBooking
+            )
+
+            if(!updateId) {
+                res.status(httpCodeStatus.BAD_REQUEST).json({
+                    message: 'Booking ID Required'
+                })
+                return
+            }
+            res.status(httpCodeStatus.OK).json({
+                message: 'Booking has been updated', updateId
+            })
+
+        } catch (error) {
+            res.status(httpCodeStatus.NOT_FOUND).json({
+                message: 'Booking has not been found', error
+            })
+        }
+    }
