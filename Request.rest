@@ -16,7 +16,29 @@ Content-Type: application/json
         "capacity": 43,
         "type": "Conference"   
 }
+
+###
+# Update room
+PUT http://localhost:0216/rooms/e333311f-105d-4fcd-b274-c00d1a033f58
+Content-Type: application/json
+
+{
+        "name": "Room-2",
+        "capacity": "8",
+        "type": "Workspace"
+}
+
 ###
 
 ##hämta alla users
 GET http://localhost:0216/users
+
+###
+## update user
+PUT http://localhost:0216/users/00b98b9b-99c7-4b79-8f32-855228848ae7
+Content-Type: application/json
+
+{
+        "username": "Mohsen Intezar",
+        "password": "mohsen123"
+}
