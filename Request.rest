@@ -42,3 +42,37 @@ Content-Type: application/json
         "username": "Mohsen Intezar",
         "password": "mohsen123"
 }
+
+### 
+# Create Bookings
+POST http://localhost:0216/bookings
+Content-Type: application/json
+
+{
+        "roomID": "a85dab4a-9803-4468-86c1-1a701b373853",
+        "userID": "e0eeb47e-67cb-40e6-8f11-38f183afb5b2",
+        "startTime": "2025-08-30",
+        "endTime": "2025-12-20"
+}
+
+### 
+#get all bookings
+GET http://localhost:0216/bookings
+
+###
+# get booking by id
+GET http://localhost:0216/bookings/1cbc70af-01e9-4662-a6d1-b4192b4b60be
+
+###
+# update booking
+PUT http://localhost:0216/bookings/1cbc70af-01e9-4662-a6d1-b4192b4b60be
+Content-Type: application/json
+
+{
+        "startTime": "2025-09-01",
+        "endTime": "2026-01-31"
+}
+
+###
+# delete booking
+DELETE http://localhost:0216/bookings/4b9b710e-0923-4a95-8d62-4a3953c333ce
