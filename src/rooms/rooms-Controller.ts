@@ -45,7 +45,7 @@ export const findAllRooms = async (req: Request, res: Response) => {
 }
 
 // find one room
-export const findOneRoom = async (req: Request, res: Response) => {
+export const findRoomById = async (req: Request, res: Response) => {
 
     try {
         const roomId = await roomsController.findOne(req.params.id);
@@ -56,6 +56,30 @@ export const findOneRoom = async (req: Request, res: Response) => {
     catch (error) {
         res.status(httpCodeStatus.NOT_FOUND).json({
             error: (error as Error)
+        })
+    }
+}
+
+// update user
+export const updateRoomById = async (req: Request, res: Response) => {
+    const updateRoom = req.body as UpdateRoom;
+
+    try {
+        const updateId = await roomsController.update(req.params.id, updateRoom);
+
+        if(!updateId) {
+            res.status(httpCodeStatus.BAD_REQUEST).json({
+                message: 'Room ID is required'
+            })
+            return
+        }
+        res.status(httpCodeStatus.OK).json({
+            message: 'Room has been updated', updateId
+        })
+        
+    } catch (error) {
+        res.status(httpCodeStatus.NOT_FOUND).json({
+            message: 'User has not been found', error
         })
     }
 }
