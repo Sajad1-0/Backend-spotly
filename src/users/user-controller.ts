@@ -1,9 +1,10 @@
 import { Response, Request } from "express";
-import { userRepository, CreateUser } from "./user-repository";
+import { userRepository, CreateUser, UpdateUser } from "./user-repository";
 import { httpCodeStatus } from "../httpStatus";
 
 const userController = new userRepository();
 
+// create user
 export const creatingUsers = async (req: Request, res: Response) => {
     const createUser = req.body as CreateUser;
     try {
@@ -17,6 +18,7 @@ export const creatingUsers = async (req: Request, res: Response) => {
     }
 }
 
+// get all users
 export const findAllUsers = async (req: Request, res: Response) => {
     try {
         const userID = await userController.findAllUsers()
@@ -28,6 +30,8 @@ export const findAllUsers = async (req: Request, res: Response) => {
         })
     }
 }
+
+// find user by id
 
 export const findOneUserById = async (req: Request, res: Response) => {
     try {
@@ -48,6 +52,8 @@ export const findOneUserById = async (req: Request, res: Response) => {
         })
     }
 }
+
+// delete user
 
 export const deleteUserById = async (req: Request, res: Response) => {
    const deleteUser = req.body as CreateUser;
@@ -71,3 +77,29 @@ export const deleteUserById = async (req: Request, res: Response) => {
     })
    };
 };
+
+// update user
+
+export const updateUserById = async (req: Request, res: Response) => {
+   
+    const updateUser = req.body as UpdateUser
+    try {
+        
+        const userUpdateId = await userController.update(req.params.id, updateUser);
+        if(!userUpdateId) {
+            res.status(httpCodeStatus.BAD_REQUEST).json({
+                message: 'User ID is required'
+            })
+            return
+           } 
+
+        res.status(httpCodeStatus.OK).json({
+            message: 'User has been updated', userUpdateId
+        })
+
+    } catch (error) {
+        res.status(httpCodeStatus.NOT_FOUND).json({
+            error: (error as Error).message
+        })
+    }
+}
