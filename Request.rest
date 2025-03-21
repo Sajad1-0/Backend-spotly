@@ -28,21 +28,6 @@ Content-Type: application/json
         "type": "Workspace"
 }
 
-###
-
-##hämta alla users
-GET http://localhost:0216/users
-
-###
-## update user
-PUT http://localhost:0216/users/00b98b9b-99c7-4b79-8f32-855228848ae7
-Content-Type: application/json
-
-{
-        "username": "Mohsen Intezar",
-        "password": "mohsen123"
-}
-
 ### 
 # Create Bookings
 POST http://localhost:0216/bookings
@@ -76,3 +61,37 @@ Content-Type: application/json
 ###
 # delete booking
 DELETE http://localhost:0216/bookings/4b9b710e-0923-4a95-8d62-4a3953c333ce
+
+###
+# create User
+POST http://localhost:0216/users
+Content-Type: application/json
+
+{
+        "username": "Sajjad-Qaderi",
+        "password": "Sajjad00",
+        "role": "Admin"
+}
+###
+
+GET http://localhost:0216/users
+###
+
+DELETE http://localhost:0216/users/a6634b92-f4aa-43aa-9538-31c7a02795f4
+
+###
+PUT http://localhost:0216/users/00b98b9b-99c7-4b79-8f32-855228848ae7
+Content-Type: application/json
+
+{
+        "password": "mohsen"
+}
+###
+
+POST http://localhost:0216/users/login
+Content-Type: application/json
+
+{
+        "username": "Sajjad siii",
+        "password": "sajjad"
+}
