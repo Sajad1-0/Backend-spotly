@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
 import { UserService } from "./user-service";
 import { httpCodeStatus } from "../httpStatus";
-import { CreateUser, UpdateUser, User, UserCrendentials } from "./user-interface";
+import { CreateUser, UpdateUser, User, UserCrendentials } from "../interfaces/user-interface";
 
 const userService = new UserService();
 

@@ -1,4 +1,4 @@
-import { UserCrendentials, User, CreateUser, UpdateUser } from "./user-interface";
+import { UserCrendentials, User, CreateUser, UpdateUser } from "../interfaces/user-interface";
 import { AuthUtils } from "../middlewares/auth-utils";
 import { userRepository } from "./user-repository";
 
