@@ -34,16 +34,26 @@ export const findAllUsers = async (req: Request, res: Response) => {
 }
 
 export const findUserById = async (req: Request, res: Response) => {
-    try {
-        const userId = await userService.findUserById(req.params.id);
+    const userIdFromToken = req.params.id;
+    const userInfoToGet = req.params['id'];
 
-        if (!userId) {
-            res.status(httpCodeStatus.BAD_REQUEST).json({
-                message: 'User ID is required'
-            })
+    if (userIdFromToken !== userInfoToGet) {
+        res.status(httpCodeStatus.NOT_AUTHORIZED).send(`
+            ${userIdFromToken} isn't allowed to get information
+            about ${userInfoToGet}`)
+        return
+    }
+
+    try {
+        const userInfo = await userService.findUserById(req.params.id);
+
+        if (!userInfo) {
+            res.status(httpCodeStatus.NOT_FOUND).send(
+                `Kunde inte hitta användaren med id: ${userInfoToGet}`
+            )
         }
         res.status(httpCodeStatus.OK).json({
-            message: 'User has been found', userId
+            message: 'User has been found', userInfo
         })
     }
     catch (error) {

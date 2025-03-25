@@ -1,3 +1,4 @@
+import { authenticateToken } from "../middlewares/auth-utils-service";
 import {creatingUsers, 
     findAllUsers, 
     deleteUserById, 
@@ -11,7 +12,7 @@ const router = Router();
 router.post('/', creatingUsers);
 router.get('/', findAllUsers);
 router.delete('/:id', deleteUserById);
-router.get('/:id', findUserById);
+router.get('/:id', authenticateToken, findUserById);
 router.put('/:id', updateUserById);
 router.post('/login', loginUser);
 
