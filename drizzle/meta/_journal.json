@@ -8,6 +8,13 @@
       "when": 1741784179987,
       "tag": "0000_mysterious_meltdown",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1742912460419,
+      "tag": "0001_last_frog_thor",
+      "breakpoints": true
     }
   ]
 }
