@@ -1,7 +1,7 @@
-import 'dotenv/config';
 import { userSchema } from '../db/schema';
 import { db } from '../rooms/rooms-Repository';
 import { eq, and } from 'drizzle-orm';
+import { UserWithoutPassword } from '../interfaces/user-interface';
 
 // typen ska innehålla samma egenskaper som databasen. 
 export type CreateUser = typeof userSchema.$inferInsert;
@@ -21,7 +21,7 @@ export class userRepository {
         .from(userSchema)
     }
 
-    async findUserById(id: string) {
+    async findUserById(id: string): Promise<UserWithoutPassword | null> {
         const findUser = await db.select()
         .from(userSchema)
         .where(eq(userSchema.id, id))
@@ -29,7 +29,8 @@ export class userRepository {
         if (findUser.length === 0) {
             throw new Error ('User not been found!')
         }
-        return findUser[0];
+        const { password, ...userWithoutPassword } = findUser[0];
+        return userWithoutPassword;
     }
     async update(id: string, updateUser: UpdateUser): Promise<string> {
         const updateRooms = await db.update(userSchema)

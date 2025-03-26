@@ -13,7 +13,8 @@ export class UserService {
 
         return userRepo.create({
             username: createUser.username,
-            password: hashedPassword
+            password: hashedPassword,
+            role: createUser.role
         })
     }
 

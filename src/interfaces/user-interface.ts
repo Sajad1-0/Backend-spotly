@@ -1,8 +1,10 @@
+import { Role } from "../users/user-roles";
+
 export interface User {
     id: string;
     username: string;
     password: string;
-    role: string
+    role: "User" | "Admin";
 }
 
 export interface UpdateUser {
@@ -17,4 +19,9 @@ export interface UserCrendentials extends Pick<User, "username" | "password"> {}
 
 export interface JwtPayload {
     username: string;
+    role: Role
+}
+
+export interface AuthenticatedRequest extends Request {
+    JwtPayload?: JwtPayload;
 }

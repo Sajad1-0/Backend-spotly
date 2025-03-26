@@ -1,14 +1,13 @@
 import { Request, Response } from "express";
-import { roomRepository, CreateRoom, UpdateRoom } from "./rooms-Repository";
+import { RoomService } from "./rooms-service";
 import { httpCodeStatus } from "../httpStatus";
 
-const roomsController = new roomRepository();
+const roomsController = new RoomService();
 
 export const createRooms = async (req: Request, res: Response) => {
-    const createRoom = req.body as CreateRoom;
 
     try {
-        const roomId = await roomsController.create(createRoom);
+        const roomId = await roomsController.create(req.body);
         res.status(httpCodeStatus.CREATED)
         .json({message: 'Rooms Created', roomId})
     }
@@ -19,17 +18,17 @@ export const createRooms = async (req: Request, res: Response) => {
 }
 
 export const deleteRoomById = async (req: Request, res: Response) => {
-    const deleteRoom = req.body as UpdateRoom;
-    if(!deleteRoom.id) {
+    const deleteRoom = req.params.id; 
+    if(!deleteRoom) {
         res.status(httpCodeStatus.BAD_REQUEST).json({
             message: 'Room ID is required'
         })
         return
     }
     try {
-        const roomId = await roomsController.delete(deleteRoom.id)
+        await roomsController.deleteRoom(deleteRoom)
         res.status(httpCodeStatus.OK).json({
-            message: 'Room has been deleted succesfully!', roomId
+            message: 'Room has been deleted succesfully!', deleteRoom
         })
     }
     catch(error) {
@@ -40,7 +39,7 @@ export const deleteRoomById = async (req: Request, res: Response) => {
 }
 
 export const findAllRooms = async (req: Request, res: Response) => {
-    const allRooms = await roomsController.findAllRooms();
+    const allRooms = await roomsController.getAllRooms();
     res.status(httpCodeStatus.OK).json(allRooms)
 }
 
@@ -48,7 +47,7 @@ export const findAllRooms = async (req: Request, res: Response) => {
 export const findRoomById = async (req: Request, res: Response) => {
 
     try {
-        const roomId = await roomsController.findOne(req.params.id);
+        const roomId = await roomsController.findOneRoomById(req.params.id);
         res.status(httpCodeStatus.OK).json({
             message: 'Room has been found', roomId
         })
@@ -62,10 +61,9 @@ export const findRoomById = async (req: Request, res: Response) => {
 
 // update user
 export const updateRoomById = async (req: Request, res: Response) => {
-    const updateRoom = req.body as UpdateRoom;
 
     try {
-        const updateId = await roomsController.update(req.params.id, updateRoom);
+        const updateId = await roomsController.updateRoom(req.params.id, req.body);
 
         if(!updateId) {
             res.status(httpCodeStatus.BAD_REQUEST).json({
