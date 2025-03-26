@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import { bookingRepository, CreateBookings, updateBookings } from "./booking-repository";
 import { httpCodeStatus } from "../httpStatus";
+import { BookingService } from "./booking-service";
 
-const bookingController = new bookingRepository();
+const bookingController = new BookingService
 
 // Create booking
 export const createBooking = async (req: Request, res: Response) => {
-    const createBooking = req.body as CreateBookings;
+;
 
     try {
-        const bookingId = await bookingController.create(createBooking)
+        const bookingId = await bookingController.create(req.body)
         res.status(httpCodeStatus.CREATED).json({
             message: 'You succesfully create a booking', bookingId
         })
@@ -24,7 +24,7 @@ export const createBooking = async (req: Request, res: Response) => {
 // get all bookings
 export const findAllBookings = async (req: Request, res: Response) => {
     try {
-        const bookingId = await bookingController.findAllBookings()
+        const bookingId = await bookingController.findAll()
         res.status(httpCodeStatus.OK).json(bookingId)
     }
     catch(err) {
@@ -37,7 +37,7 @@ export const findAllBookings = async (req: Request, res: Response) => {
 // find Booking 
 export const findBookingById = async (req: Request, res: Response) => {
     try {
-        const bookingId = await bookingController.findOneBooking(req.params.id);
+        const bookingId = await bookingController.findOne(req.params.id);
         
         if(!bookingId) {
             res.status(httpCodeStatus.BAD_REQUEST).json({
@@ -79,13 +79,10 @@ export const deleteBookingById = async (req: Request, res: Response) => {
 // update booking
 export const updateBookingById = async (
     req: Request, res: Response) => {
-        
-        const updateBooking = req.body as updateBookings
-
         try {
             const updateId = await bookingController.update(
                 req.params.id,
-                updateBooking
+                req.body
             )
 
             if(!updateId) {
