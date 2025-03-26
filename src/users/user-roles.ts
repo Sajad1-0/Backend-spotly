@@ -21,7 +21,7 @@ export type Roles = {
 }
 
 export const ROLE_HIERARCHY: Roles = {
-    [Role.Admin] : [Role.Admin], [Role.User],
+    [Role.Admin] : [Role.Admin, Role.User],
     [Role.User] : [Role.User]
 }
 
