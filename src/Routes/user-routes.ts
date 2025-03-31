@@ -5,15 +5,16 @@ import {creatingUsers,
     updateUserById, 
     findUserById,
     loginUser} from "../users/user-controller";
+import { authorize } from "../middlewares/authorize-utils";
 import {Router} from "express";
 
 const router = Router();
 
-router.post('/', creatingUsers);
+router.post('/', authorize(['user:create']), creatingUsers);
 router.get('/', findAllUsers);
-router.delete('/:id', deleteUserById);
+router.delete('/:id', authenticateToken, deleteUserById);
 router.get('/:id', authenticateToken, findUserById);
-router.put('/:id', updateUserById);
-router.post('/login', loginUser);
+router.put('/:id', authenticateToken,updateUserById);
+router.post('/login',authenticateToken, loginUser);
 
 export default router;
