@@ -1,13 +1,14 @@
 import { Role, Permission, ROLES_WITH_PERMISSIONS } from "../users/user-roles";
 import { Response, NextFunction } from "express";
 import { httpCodeStatus } from "../httpStatus";
-import { AuthenticatedRequest } from "../interfaces/user-interface";
+import { JwtPayload } from "../interfaces/user-interface";
 
 
 export const authorize = (requiredPermissions: Permission[]) => {
-    return (req: AuthenticatedRequest, res: Response, 
+    return (req: any, res: Response, 
         next: NextFunction): void => {
-            const { role } = req.JwtPayload || {};
+    
+            const { role } = req.jwtPayload as JwtPayload;
             
             if(!role) {
                 res.status(httpCodeStatus.NOT_AUTHENTICATED)
@@ -17,6 +18,8 @@ export const authorize = (requiredPermissions: Permission[]) => {
 
             if(role === Role.Admin) {
                 console.log('User is and Admin, skip authentication')
+                next()
+                return
             }
 
             const userPermissions = ROLES_WITH_PERMISSIONS[role]
