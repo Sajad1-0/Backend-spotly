@@ -3,15 +3,17 @@ export enum Role {
     User = 'User'
 }
 
-export type Permission = 'create' | 'read' | 'update' | 'delete';
+export type Resource = 'room' | 'user'
+export type Action = 'create' | 'read' | 'update' | 'delete'
+export type Permission = `${Resource}:${Action}`
 
 export type RolesWithPermissions = {
     [role in Role]: Permission[]
 }
 
 export const ROLES_WITH_PERMISSIONS: RolesWithPermissions = {
-    [Role.Admin]: ['create', 'read', 'update', 'delete'],
-    [Role.User]: ['read']
+    [Role.Admin]: ['user:create', 'user:read', 'user:update', 'user:delete'],
+    [Role.User]: ['user:read', 'room:create']
 }
 
 
