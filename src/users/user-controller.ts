@@ -1,13 +1,15 @@
 import { Response, Request } from "express";
 import { UserService } from "./user-service";
 import { httpCodeStatus } from "../httpStatus";
-import { CreateUser, UpdateUser, User, UserCrendentials } from "../interfaces/user-interface";
+import { CreateUser, UpdateUser, User, UserCrendentials, AuthenticateRequest } from "../interfaces/user-interface";
 
 const userService = new UserService();
 
 // create user
 export const creatingUsers = async (req: Request, res: Response) => {
     const createUser = req.body as CreateUser;
+    console.log("Request Body:", req.body);
+    console.log("Role before insert:", req.body.role);
     try {
         const userId = await userService.create(createUser);
         res.status(httpCodeStatus.CREATED).json({
@@ -33,9 +35,10 @@ export const findAllUsers = async (req: Request, res: Response) => {
     }
 }
 
-export const findUserById = async (req: Request, res: Response) => {
-    const userIdFromToken = req.params.id;
-    const userInfoToGet = req.params['id'];
+export const findUserById = async (req: AuthenticateRequest, res: Response) => {
+
+    const userIdFromToken = req.jwtPayload?.userId;
+    const userInfoToGet = req.params.id;
 
     if (userIdFromToken !== userInfoToGet) {
         res.status(httpCodeStatus.NOT_AUTHORIZED).send(`
@@ -123,7 +126,7 @@ export const loginUser = async (req: Request, res: Response) => {
         console.log(`Couldn't login user with username:
         ${userLogin.username}`);
         res.status(httpCodeStatus.NOT_AUTHENTICATED).json({
-            message: 'Invalid username'
+            message: 'Invalid username or password! please try again'
         })
         return    
     }
