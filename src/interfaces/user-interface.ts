@@ -1,4 +1,5 @@
 import { Role } from "../users/user-roles";
+import { Request } from "express";
 
 export interface User {
     id: string;
@@ -15,13 +16,18 @@ export interface UpdateUser {
 
 export interface UserWithoutPassword extends Omit<User, "password"> {}
 export interface CreateUser extends Omit<User, "id"> {}
-export interface UserCrendentials extends Pick<User, "username" | "password"> {}
+export interface UserCrendentials {
+    username: string;
+    password: string;
+    role: Role;
+}
 
 export interface JwtPayload {
+    userId: string;
     username: string;
     role: Role
 }
 
-export interface AuthenticatedRequest extends Request {
-    JwtPayload?: JwtPayload;
+export interface AuthenticateRequest extends Request {
+    jwtPayload?: JwtPayload
 }
