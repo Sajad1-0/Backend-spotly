@@ -1,7 +1,7 @@
 import { userSchema } from '../db/schema';
 import { db } from '../rooms/rooms-Repository';
 import { eq, and } from 'drizzle-orm';
-import { UserWithoutPassword } from '../interfaces/user-interface';
+import { User, UserWithoutPassword } from '../interfaces/user-interface';
 
 // typen ska innehålla samma egenskaper som databasen. 
 export type CreateUser = typeof userSchema.$inferInsert;
@@ -21,15 +21,26 @@ export class userRepository {
         .from(userSchema)
     }
 
-    async findUserById(id: string): Promise<UserWithoutPassword | null> {
+    async findUserByUsername(username: string): Promise<User | null> {
         const findUser = await db.select()
         .from(userSchema)
-        .where(eq(userSchema.id, id))
+        .where(eq(userSchema.username, username))
 
         if (findUser.length === 0) {
             throw new Error ('User not been found!')
         }
-        const { password, ...userWithoutPassword } = findUser[0];
+        return findUser[0];
+    }
+
+    async findUserById(id: string): Promise<UserWithoutPassword | null> {
+        const findUserById = await db.select()
+        .from(userSchema)
+        .where(eq(userSchema.id, id))
+
+        if (findUserById.length === 0) {
+            throw new Error ('User not been found!')
+        }
+        const { password, ...userWithoutPassword } = findUserById[0];
         return userWithoutPassword;
     }
     async update(id: string, updateUser: UpdateUser): Promise<string> {
