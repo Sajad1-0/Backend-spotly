@@ -1,6 +1,7 @@
-import { UserCrendentials, User, CreateUser, UpdateUser } from "../interfaces/user-interface";
+import { UserCrendentials, CreateUser, UpdateUser } from "../interfaces/user-interface";
 import { AuthUtils } from "../middlewares/auth-utils";
 import { userRepository } from "./user-repository";
+import { Role } from "./user-roles";
 
 const authUtils = new AuthUtils();
 const userRepo = new userRepository();
@@ -46,6 +47,13 @@ export class UserService {
             return null
         }
 
+        const user = await userRepo.findUserByUsername(crendentials.username)
+
+        if(!user) {
+            console.warn(`User with id: ${crendentials.username} doesn't exist`)
+            return null
+        }
+
         const correctCrendentials = await authUtils.validatePassword(
             crendentials.password, hashedPassword
         )
@@ -55,6 +63,7 @@ export class UserService {
             return null
         }
         
-        return authUtils.generateToken(crendentials.username);
+        //hämta från databasen och inte från UserCrendentials
+        return authUtils.generateToken(user.id, user.role as Role, user.username);
     }
 }
