@@ -8,8 +8,6 @@ const userService = new UserService();
 // create user
 export const creatingUsers = async (req: Request, res: Response) => {
     const createUser = req.body as CreateUser;
-    console.log("Request Body:", req.body);
-    console.log("Role before insert:", req.body.role);
     try {
         const userId = await userService.create(createUser);
         res.status(httpCodeStatus.CREATED).json({
