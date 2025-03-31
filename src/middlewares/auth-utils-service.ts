@@ -1,20 +1,21 @@
 import { AuthUtils } from "./auth-utils";
 import { httpCodeStatus } from "../httpStatus";
 import { Request, Response, NextFunction } from "express";
+import { AuthenticateRequest } from "../interfaces/user-interface";
 
 const authUtils = new AuthUtils();
 
 export const authenticateToken = async (
-    req: Request, res: Response, next: NextFunction): Promise <any> => {
-        const token = req.header('Authorization')?.split(' ')[1];
+    req: AuthenticateRequest, res: Response, next: NextFunction): Promise <any> => {
+        const token = req.headers.authorization?.split(' ')[1]; 
 
-        if(!token) return res.status(httpCodeStatus.NOT_AUTHENTICATED).send('Ingen token skickades');
+        if(!token) return next();
         
-        const username = await authUtils.verifyToken(token);
+        const payload = await authUtils.verifyToken(token);
 
-        if(!username) return res.status(httpCodeStatus.NOT_AUTHENTICATED).send('Ogiltig token');
-
-        req.body.username = username;
+        if(!payload || !payload.userId) return res.status(httpCodeStatus.NOT_AUTHENTICATED).send('Invalid token');
+        
+        req.jwtPayload = payload
 
         next();
     } 
