@@ -37,8 +37,12 @@ export const findUserById = async (req: AuthenticateRequest, res: Response) => {
 
     const userIdFromToken = req.jwtPayload?.userId;
     const userInfoToGet = req.params.id;
+    const userRoleFromToken = req.jwtPayload?.role
 
-    if (userIdFromToken !== userInfoToGet) {
+    const isAuthorized = userRoleFromToken === 'Admin' || 
+    userIdFromToken === userInfoToGet
+
+    if (!isAuthorized) {
         res.status(httpCodeStatus.NOT_AUTHORIZED).send(`
             ${userIdFromToken} isn't allowed to get information
             about ${userInfoToGet}`)
@@ -46,7 +50,7 @@ export const findUserById = async (req: AuthenticateRequest, res: Response) => {
     }
 
     try {
-        const userInfo = await userService.findUserById(req.params.id);
+        const userInfo = await userService.findUserById(userInfoToGet);
 
         if (!userInfo) {
             res.status(httpCodeStatus.NOT_FOUND).send(
