@@ -1,3 +1,6 @@
+import { Role } from "../users/user-roles";
+import { Request } from "express";
+
 export interface Booking {
     id: string;
     roomID: string;
@@ -14,3 +17,12 @@ export interface UpdateBooking {
 }
 
 export interface CreateBookings extends Omit<Booking, 'id'> {}
+
+export interface JwtToken {
+    userID: string,
+    role: Role,
+}
+
+export interface AuthenticateRequest extends Request {
+    jwtPayload?: JwtToken;
+}

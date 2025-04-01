@@ -6,15 +6,16 @@ const bookingController = new BookingService
 
 // Create booking
 export const createBooking = async (req: Request, res: Response) => {
-;
-
     try {
         const bookingId = await bookingController.create(req.body)
+        console.log(bookingId)
         res.status(httpCodeStatus.CREATED).json({
-            message: 'You succesfully create a booking', bookingId
+            message: 'You succesfully create a booking',
         })
     }
     catch(err) {
+        console.log(err)
+        console.log()
         res.status(httpCodeStatus.NOT_FOUND).json({
             error: (err as Error).message
         })

@@ -36,6 +36,7 @@ export class bookingRepository {
         ))
         
         if(bookingId.length === 0) {
+            // todo: säg till att den kastar 404 till klienten
             throw new Error('The booking has been not found')
         }
         
