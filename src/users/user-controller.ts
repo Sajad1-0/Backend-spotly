@@ -65,28 +65,30 @@ export const findUserById = async (req: AuthenticateRequest, res: Response) => {
 }
 
 // delete user
+export const deleteUserById = async (req: AuthenticateRequest, res: Response) => {
+    const userIdFromToken = req.jwtPayload?.userId; 
+    const userId = req.params.id;
+    const userRoleFromToken = req.jwtPayload?.role;
+    
+    const isAuthorized = userRoleFromToken === 'Admin' || userIdFromToken === userId 
 
-export const deleteUserById = async (req: Request, res: Response) => {
-   const userId = req.params.id;
-   
-   if(!userId) {
-    res.status(httpCodeStatus.BAD_REQUEST).json({
-        message: 'User ID is required'
-    })
-    return 
-   }
+    if(!isAuthorized) {
+        res.status(httpCodeStatus.NOT_AUTHORIZED).send(
+            `${userIdFromToken} isn't allowed to delete this user: 
+            ${userId}`
+        )
+        return 
+    }
+    
+    try {
+        await userService.delete(userId)
+        res.status(httpCodeStatus.NO_CONTENT).send(`
+            ${userId} has been deleted`)
+    } catch (error) {
+        res.status(httpCodeStatus.INTERNAL_SERVER_ERROR).send(`
+            Something went wrong`)
+    }
 
-   try {
-    await userService.delete(req.params.id)
-    res.status(httpCodeStatus.OK).json({
-        message: 'User has been deleted', userId
-    })
-   }
-   catch(e) {
-    res.status(httpCodeStatus.NOT_FOUND).json({
-        error: (e as Error).message
-    })
-   };
 };
 
 // update user
