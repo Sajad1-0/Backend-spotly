@@ -16,9 +16,11 @@ export class userRepository {
         return CreatedUser[0].insertedId;
     }
 
-    async findAllUsers(): Promise<CreateUser[]> {
-        return await db.select()
+    async findAllUsers(): Promise<UserWithoutPassword[] | null> {
+        const allUsers = await db.select()
         .from(userSchema)
+        
+        return allUsers.map(({ password, ...usersWithoutPassword}) => usersWithoutPassword)
     }
 
     async findUserByUsername(username: string): Promise<User | null> {
