@@ -4,5 +4,7 @@ export enum httpCodeStatus {
     NOT_FOUND = 404,
     BAD_REQUEST = 400,
     NOT_AUTHENTICATED = 401,
-    NOT_AUTHORIZED = 403
+    NOT_AUTHORIZED = 403,
+    NO_CONTENT = 204,
+    INTERNAL_SERVER_ERROR = 500,
 }
