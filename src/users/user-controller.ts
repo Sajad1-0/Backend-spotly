@@ -21,7 +21,16 @@ export const creatingUsers = async (req: Request, res: Response) => {
 }
 
 // get all users
-export const findAllUsers = async (req: Request, res: Response) => {
+export const findAllUsers = async (req: any, res: Response) => {
+    const userRoleFromToken = req.jwtPayload?.role;
+
+    if (userRoleFromToken !== 'Admin') {
+        res.status(httpCodeStatus.NOT_AUTHORIZED).send(`
+            ${userRoleFromToken} isn't allowed to get all users`)
+        
+        return
+    }
+
     try {
         const userID = await userService.findAllUsers()
         res.status(httpCodeStatus.OK).json(userID)
