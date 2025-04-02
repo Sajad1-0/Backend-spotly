@@ -97,27 +97,29 @@ export const deleteUserById = async (req: AuthenticateRequest, res: Response) =>
 
 // update user
 
-export const updateUserById = async (req: Request, res: Response) => {
-   
+export const updateUserById = async (req: AuthenticateRequest, res: Response) => {
+
+    const userIdFromToken = req.jwtPayload?.userId;
+    const userIdFromParams = req.params.id;
     const updateUser = req.body as UpdateUser
+
+    if(userIdFromParams !== userIdFromToken) {
+        res.status(httpCodeStatus.NOT_AUTHORIZED).send(`
+            ${userIdFromToken} isn't allowed to update this user:
+            ${userIdFromParams}`)
+     
+        return
+    }
+
     try {
         
-        const userUpdateId = await userService.update(req.params.id, updateUser);
-        if(!userUpdateId) {
-            res.status(httpCodeStatus.BAD_REQUEST).json({
-                message: 'User ID is required'
-            })
-            return
-           } 
-
-        res.status(httpCodeStatus.OK).json({
-            message: 'User has been updated', userUpdateId
-        })
-
+        await userService.update(userIdFromParams, updateUser);
+        res.status(httpCodeStatus.NO_CONTENT).send(`
+            ${userIdFromParams} has been updated`)
     } catch (error) {
-        res.status(httpCodeStatus.NOT_FOUND).json({
-            error: (error as Error).message
-        })
+        res.status(httpCodeStatus.INTERNAL_SERVER_ERROR).send(
+            'Something went wrong'
+        )
     }
     
 }
