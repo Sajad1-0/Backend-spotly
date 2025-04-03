@@ -12,8 +12,10 @@ export type RolesWithPermissions = {
 }
 
 export const ROLES_WITH_PERMISSIONS: RolesWithPermissions = {
-    [Role.Admin]: ['user:create', 'user:read', 'user:update', 'user:delete'],
-    [Role.User]: ['user:read', 'room:create']
+    [Role.Admin]: ['user:create', 'user:read', 'user:update', 'user:delete',
+        'room:create', 'room:read', 'room:update', 'room:delete'
+    ],
+    [Role.User]: ['user:read', 'room:read']
 }
 
 
