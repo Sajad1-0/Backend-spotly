@@ -1,3 +1,4 @@
+import { authorize } from "../middlewares/authorize-utils";
 import { 
     createRooms,
     deleteRoomById, 
@@ -8,7 +9,7 @@ import { Router } from "express";
 
 const router = Router()
 
-router.post('/', createRooms);
+router.post('/', authorize(['room:create']), createRooms);
 router.get('/', findAllRooms);
 router.delete('/:id', deleteRoomById);
 router.get('/:id', findRoomById);

@@ -4,7 +4,16 @@ import { httpCodeStatus } from "../httpStatus";
 
 const roomsController = new RoomService();
 
-export const createRooms = async (req: Request, res: Response) => {
+export const createRooms = async (req: any, res: Response) => {
+
+    const UserRoleFromToken = req.jwtPayload?.role;
+
+    if (UserRoleFromToken !== 'Admin') {
+        res.status(httpCodeStatus.NOT_AUTHORIZED).send(`
+            ${UserRoleFromToken} isn't allowed to create rooms,
+            only Admin can create rooms`)
+        return
+    }
 
     try {
         const roomId = await roomsController.create(req.body);
@@ -17,8 +26,17 @@ export const createRooms = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteRoomById = async (req: Request, res: Response) => {
+export const deleteRoomById = async (req: any, res: Response) => {
+    const UserRoleFromToken = req.jwtPayload?.role;
     const deleteRoom = req.params.id; 
+
+    if (UserRoleFromToken !== 'Admin') {
+        res.status(httpCodeStatus.NOT_AUTHORIZED).send(`
+            ${UserRoleFromToken} isn't allowed to delete rooms,
+            only Admin can delete rooms`)
+        return
+    }
+
     if(!deleteRoom) {
         res.status(httpCodeStatus.BAD_REQUEST).json({
             message: 'Room ID is required'
@@ -60,7 +78,15 @@ export const findRoomById = async (req: Request, res: Response) => {
 }
 
 // update user
-export const updateRoomById = async (req: Request, res: Response) => {
+export const updateRoomById = async (req: any, res: Response) => {
+
+    const UserRoleFromToken = req.jwtPayload?.role;
+
+    if( UserRoleFromToken !== 'Admin') {
+        res.status(httpCodeStatus.NOT_AUTHORIZED).send(`
+            ${UserRoleFromToken} isn't allowed to update rooms,
+            Only Admin can update rooms`)
+    }
 
     try {
         const updateId = await roomsController.updateRoom(req.params.id, req.body);
