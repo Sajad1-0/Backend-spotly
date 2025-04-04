@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import { bookingSchema } from '../db/schema';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, lte, gte, or } from 'drizzle-orm';
 import { db } from '../rooms/rooms-Repository';
+import { FindBookingsByRoomId } from '../interfaces/booking-interface';
 
 export  type CreateBookings = typeof bookingSchema.$inferInsert;
 export type updateBookings = Partial<CreateBookings>;
@@ -41,6 +42,23 @@ export class bookingRepository {
         }
         
         return bookingId[0]
+    }
+
+    async findBookingByRoomIdAndDate(roomId: string, startTme: string, 
+        endTime:string) {
+            return await db.select()
+            .from(bookingSchema)
+            .where(and(eq(bookingSchema.roomID, roomId),
+            or(
+                and(
+                    lte(bookingSchema.startTime, endTime),
+                    gte(bookingSchema.endTime, startTme)
+                ),
+                and(
+                    lte(bookingSchema.startTime, startTme),
+                    gte(bookingSchema.endTime, endTime)
+                )
+            )))
     }
 
     async delete(id: string): Promise<string> {

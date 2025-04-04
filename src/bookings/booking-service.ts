@@ -5,6 +5,24 @@ const bookingService = new bookingRepository();
 
 export class BookingService {
     async create(createBooking: CreateBookings): Promise<string> {
+
+        if(createBooking.startTime >= createBooking.endTime) {
+            throw new Error ('Start-Time date must be before end-Time date')
+        }
+
+        const existingBookings = await bookingService.findBookingByRoomIdAndDate(
+            createBooking.roomID,
+            createBooking.startTime,
+            createBooking.endTime
+        )
+
+        if (existingBookings.length > 0 ) {
+            throw new Error (`The room is already booked for the selected dates: 
+                ${createBooking.startTime}, ${createBooking.endTime}.
+                Please choose another date`)
+        }
+
+
         return await bookingService.create(createBooking)
     }
 
