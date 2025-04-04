@@ -10,13 +10,13 @@ export class BookingService {
             throw new Error ('Start-Time date must be before end-Time date')
         }
 
-        const existingBookings = await bookingService.findBookingByRoomIdAndDate(
+        const checkRoomAvailability = await bookingService.findBookingByRoomIdAndDate(
             createBooking.roomID,
             createBooking.startTime,
             createBooking.endTime
         )
 
-        if (existingBookings.length > 0 ) {
+        if (checkRoomAvailability.length > 0 ) {
             throw new Error (`The room is already booked for the selected dates: 
                 ${createBooking.startTime}, ${createBooking.endTime}.
                 Please choose another date`)
