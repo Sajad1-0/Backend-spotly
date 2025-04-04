@@ -10,8 +10,8 @@ import { authorizeForOwners } from "../middlewares/authorize-for-owners";
 
 const router = Router()
 
-router.post('/', authorize(['room:create']), createBooking);
-router.get('/', authorize(['user:create']), findAllBookings);
+router.post('/', createBooking);
+router.get('/', findAllBookings);
 router.get('/:id', authorizeForOwners, findBookingById);
 router.delete('/:id', authorizeForOwners, deleteBookingById);
 router.put('/:id',  authorizeForOwners, updateBookingById)
