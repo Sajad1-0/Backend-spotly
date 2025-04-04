@@ -23,7 +23,16 @@ export const createBooking = async (req: Request, res: Response) => {
 }
 
 // get all bookings
-export const findAllBookings = async (req: Request, res: Response) => {
+export const findAllBookings = async (req: any, res: Response) => {
+
+    const userRoleFromToken = req.jwtPayload?.role;
+
+    if(userRoleFromToken !== 'Admin') {
+        res.status(httpCodeStatus.NOT_AUTHORIZED).send(`
+            ${userRoleFromToken}s aren't allowed to see all bookings,
+            only Admins are allowed!`)
+    }
+
     try {
         const bookingId = await bookingController.findAll()
         res.status(httpCodeStatus.OK).json(bookingId)
