@@ -18,6 +18,6 @@ export const authorizeForOwners = async (req: AuthenticateRequest, res: Response
     if(requesterUserID === ownerUserID) next();
 
     res.status(httpCodeStatus.NOT_AUTHORIZED)
-    .send(`User with this ${ownerUserID} hasn't rights to see information about this booking: ${bookingID}`)
+    .send(`User with this ${ownerUserID} hasn't any rights for this booking: ${bookingID}`)
 
 }
